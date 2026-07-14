@@ -55,7 +55,7 @@ export function RecordForm({ record, defaultPatientId, initialPatientId }: Recor
     (async () => {
       const { data } = await supabase
         .from("patients")
-        .select("id, full_name")
+        .select("*")
         .order("full_name");
       setPatients(data ?? []);
       setLoadingPatients(false);
@@ -76,7 +76,10 @@ export function RecordForm({ record, defaultPatientId, initialPatientId }: Recor
 
   React.useEffect(() => {
     if (state?.error) toast.error("Erro", state.error);
-    if (state?.success) toast.success("Sucesso", state.success);
+    if (state?.success) {
+      toast.success("Sucesso", state.success);
+      if (state.redirectTo) router.push(state.redirectTo);
+    }
   }, [state]);
 
   const fieldErrors = state?.fieldErrors ?? {};

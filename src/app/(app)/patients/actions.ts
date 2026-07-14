@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { isValidCPF } from "@/lib/utils/validators";
@@ -27,6 +26,7 @@ export type PatientActionState = {
   error?: string;
   fieldErrors?: Record<string, string>;
   success?: string;
+  redirectTo?: string;
 };
 
 export async function createPatientAction(
@@ -74,7 +74,7 @@ export async function createPatientAction(
   }
 
   revalidatePath("/patients");
-  redirect(`/patients/${data.id}`);
+  return { success: "Paciente criado.", redirectTo: `/patients/${data.id}` };
 }
 
 export async function updatePatientAction(

@@ -146,7 +146,7 @@ export function PatientsList() {
                   </thead>
                   <tbody className="divide-y divide-divider">
                     {patients.map((p) => {
-                      const s = statusMap[p.status];
+                      const s = statusMap[p.status as keyof typeof statusMap];
                       const age = ageFromBirthDate(p.birth_date);
                       return (
                         <tr key={p.id} className="hover:bg-surface-container-lowest/50 transition-colors">

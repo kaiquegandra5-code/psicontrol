@@ -63,7 +63,7 @@ export function DocumentGenerator({ initialPatientId }: { initialPatientId?: str
     (async () => {
       const [{ data: t }, { data: p }, { data: pr }] = await Promise.all([
         supabase.from("document_templates").select("*").order("is_default", { ascending: false }).order("name"),
-        supabase.from("patients").select("id, full_name, cpf, birth_date, phone, email, address").neq("status", "archived").order("full_name"),
+        supabase.from("patients").select("*").neq("status", "archived").order("full_name"),
         supabase.from("profiles").select("*").single(),
       ]);
       setTemplates(t ?? []);

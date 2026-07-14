@@ -59,9 +59,14 @@ export function DocumentsList() {
   }, [fetch]);
 
   async function handleOpen(id: string) {
-    // Server action that signs URL and redirects
     const result = await getSignedDocumentUrlAction(id);
-    if (result?.error) toast.error("Erro", result.error);
+    if (result?.error) {
+      toast.error("Erro", result.error);
+      return;
+    }
+    if (result?.url) {
+      window.open(result.url, "_blank", "noopener,noreferrer");
+    }
   }
 
   async function handleDelete(id: string, title: string) {

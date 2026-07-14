@@ -56,7 +56,10 @@ export function PatientForm({ patient }: PatientFormProps) {
 
   React.useEffect(() => {
     if (state?.error) toast.error("Erro", state.error);
-    if (state?.success) toast.success("Sucesso", state.success);
+    if (state?.success) {
+      toast.success("Sucesso", state.success);
+      if (state.redirectTo) router.push(state.redirectTo);
+    }
   }, [state]);
 
   // Format masked inputs

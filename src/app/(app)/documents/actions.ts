@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { fillTemplate, generateClinicalPdf } from "@/lib/pdf/generator";
@@ -91,7 +90,7 @@ export async function generateDocumentAction(
     title: args.title,
     content: filledContent,
     authorName: profile?.full_name,
-    authorCrp: profile?.crp,
+    authorCrp: profile?.crp ?? undefined,
     patientName: patient.full_name,
   });
 
@@ -197,7 +196,7 @@ export async function getSignedDocumentUrlAction(id: string) {
 
   if (error || !data) return { error: "Não foi possível gerar o link." };
 
-  redirect(data.signedUrl);
+  return { url: data.signedUrl };
 }
 
 // Templates CRUD

@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 
@@ -20,6 +19,7 @@ export type AppointmentActionState = {
   error?: string;
   fieldErrors?: Record<string, string>;
   success?: string;
+  redirectTo?: string;
 };
 
 export async function createAppointmentAction(
@@ -77,7 +77,7 @@ export async function createAppointmentAction(
 
   revalidatePath("/appointments");
   revalidatePath("/dashboard");
-  redirect(`/appointments/${data.id}`);
+  return { success: "Consulta criada.", redirectTo: `/appointments/${data.id}` };
 }
 
 export async function updateAppointmentAction(
@@ -126,7 +126,7 @@ export async function updateAppointmentAction(
 
 export async function updateAppointmentStatusAction(
   id: string,
-  status: "scheduled" | "completed" | "cancelled" | "no_show"
+  status: string
 ) {
   const supabase = await createClient();
   const {

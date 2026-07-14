@@ -1,21 +1,27 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Database } from "@/types/database";
+import type { User } from "@supabase/supabase-js";
+import type { Profile } from "@/types/database";
 
 /**
- * Get the current authenticated user + profile, or null.
+ * Get the current authenticated user + profile. When unauthenticated,
+ * returns `{ user: null, profile: null }` (never `null` itself) so callers
+ * can consistently read `user`/`profile` and null-check them.
  */
-export async function getCurrentUser() {
+export async function getCurrentUser(): Promise<{
+  user: User | null;
+  profile: Profile | null;
+}> {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return null;
+  if (!user) return { user: null, profile: null };
 
   const { data: profile } = await supabase
     .from("profiles")
     .select("*")
     .eq("id", user.id)
-    .single<Database["public"]["Tables"]["profiles"]["Row"]>();
+    .single();
 
   return { user, profile };
 }

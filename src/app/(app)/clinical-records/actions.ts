@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 
@@ -20,6 +19,7 @@ export type RecordActionState = {
   error?: string;
   fieldErrors?: Record<string, string>;
   success?: string;
+  redirectTo?: string;
 };
 
 export async function createRecordAction(
@@ -86,7 +86,7 @@ export async function createRecordAction(
 
   revalidatePath("/clinical-records");
   revalidatePath(`/patients/${parsed.data.patient_id}`);
-  redirect(`/clinical-records/${data.id}`);
+  return { success: "Registro criado.", redirectTo: `/clinical-records/${data.id}` };
 }
 
 export async function updateRecordAction(

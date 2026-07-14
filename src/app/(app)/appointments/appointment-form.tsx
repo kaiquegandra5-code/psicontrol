@@ -59,7 +59,7 @@ export function AppointmentForm({ appointment, defaultPatientId, initialPatientI
     (async () => {
       const { data } = await supabase
         .from("patients")
-        .select("id, full_name, status")
+        .select("*")
         .neq("status", "archived")
         .order("full_name");
       setPatients(data ?? []);
@@ -81,7 +81,10 @@ export function AppointmentForm({ appointment, defaultPatientId, initialPatientI
 
   React.useEffect(() => {
     if (state?.error) toast.error("Erro", state.error);
-    if (state?.success) toast.success("Sucesso", state.success);
+    if (state?.success) {
+      toast.success("Sucesso", state.success);
+      if (state.redirectTo) router.push(state.redirectTo);
+    }
   }, [state]);
 
   const fieldErrors = state?.fieldErrors ?? {};
