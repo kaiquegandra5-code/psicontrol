@@ -83,7 +83,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        heading: ["var(--font-geist)", "ui-sans-serif", "system-ui"],
+        heading: ["var(--font-geist-sans)", "ui-sans-serif", "system-ui"],
         sans: ["var(--font-inter)", "ui-sans-serif", "system-ui"],
         clinical: ["var(--font-inter)", "ui-serif", "Georgia"],
       },
