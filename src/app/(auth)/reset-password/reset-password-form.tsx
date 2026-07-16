@@ -46,7 +46,7 @@ export function ResetPasswordForm() {
       <div className="mb-8">
         <h1 className="text-headline-lg font-heading">Criar nova senha</h1>
         <p className="mt-2 text-body-md text-on-surface-variant">
-          Sua nova senha deve ter pelo menos 8 caracteres.
+          Sua nova senha deve ter pelo menos 12 caracteres.
         </p>
       </div>
 
@@ -68,9 +68,9 @@ export function ResetPasswordForm() {
             id="password"
             name="password"
             type="password"
-            placeholder="Mínimo 8 caracteres"
+            placeholder="Mínimo 12 caracteres"
             required
-            minLength={8}
+            minLength={12}
             leftIcon={<Lock className="h-4 w-4" />}
           />
         </div>
@@ -83,7 +83,7 @@ export function ResetPasswordForm() {
             type="password"
             placeholder="Digite novamente"
             required
-            minLength={8}
+            minLength={12}
             leftIcon={<Lock className="h-4 w-4" />}
           />
         </div>

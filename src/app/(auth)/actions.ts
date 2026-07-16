@@ -45,8 +45,8 @@ export async function registerAction(formData: FormData): Promise<AuthActionResu
     return { error: "Preencha todos os campos." };
   }
 
-  if (password.length < 8) {
-    return { error: "A senha deve ter no mínimo 8 caracteres." };
+  if (password.length < 12) {
+    return { error: "A senha deve ter no mínimo 12 caracteres." };
   }
 
   if (password !== confirmPassword) {
@@ -60,7 +60,7 @@ export async function registerAction(formData: FormData): Promise<AuthActionResu
       data: {
         full_name: fullName,
       },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?next=/dashboard`,
+      emailRedirectTo: `${(process.env.NEXT_PUBLIC_APP_URL ?? "").replace(/\/$/, "")}/auth/callback?next=/dashboard`,
     },
   });
 
@@ -76,7 +76,7 @@ export async function registerAction(formData: FormData): Promise<AuthActionResu
   }
 
   revalidatePath("/", "layout");
-  return { success: "Conta criada. Verifique seu e-mail para confirmar (se aplicável)." };
+  return { success: "Conta criada. Verifique seu e-mail para confirmar o endereço antes de entrar." };
 }
 
 export async function logoutAction() {
@@ -94,8 +94,10 @@ export async function forgotPasswordAction(formData: FormData): Promise<AuthActi
     return { error: "Informe seu e-mail." };
   }
 
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "").replace(/\/$/, "");
+
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/reset-password`,
+    redirectTo: `${appUrl}/auth/callback?next=/reset-password`,
   });
 
   if (error) {
@@ -110,8 +112,8 @@ export async function resetPasswordAction(formData: FormData): Promise<AuthActio
   const password = String(formData.get("password") ?? "");
   const confirmPassword = String(formData.get("confirm_password") ?? "");
 
-  if (password.length < 8) {
-    return { error: "A senha deve ter no mínimo 8 caracteres." };
+  if (password.length < 12) {
+    return { error: "A senha deve ter no mínimo 12 caracteres." };
   }
 
   if (password !== confirmPassword) {

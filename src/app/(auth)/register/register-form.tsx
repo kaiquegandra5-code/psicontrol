@@ -99,10 +99,10 @@ export function RegisterForm() {
             id="password"
             name="password"
             type="password"
-            placeholder="Mínimo 8 caracteres"
+            placeholder="Mínimo 12 caracteres"
             required
             autoComplete="new-password"
-            minLength={8}
+            minLength={12}
             leftIcon={<Lock className="h-4 w-4" />}
           />
         </div>
@@ -116,7 +116,7 @@ export function RegisterForm() {
             placeholder="Digite a senha novamente"
             required
             autoComplete="new-password"
-            minLength={8}
+            minLength={12}
             leftIcon={<Lock className="h-4 w-4" />}
           />
         </div>

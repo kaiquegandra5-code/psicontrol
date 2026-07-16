@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "@/types/database";
+import { applySecurityHeaders } from "@/lib/security-headers";
 
 const PUBLIC_PATHS = ["/login", "/register", "/forgot-password", "/reset-password", "/auth/callback"];
 const AUTH_PATHS = ["/login", "/register", "/forgot-password"];
@@ -49,9 +50,9 @@ export async function updateSession(request: NextRequest) {
     if (user && AUTH_PATHS.some((p) => pathname.startsWith(p))) {
       const url = request.nextUrl.clone();
       url.pathname = "/dashboard";
-      return NextResponse.redirect(url);
+      return applySecurityHeaders(NextResponse.redirect(url));
     }
-    return supabaseResponse;
+    return applySecurityHeaders(supabaseResponse);
   }
 
   // Protected routes
@@ -59,8 +60,8 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("redirectTo", pathname);
-    return NextResponse.redirect(url);
+    return applySecurityHeaders(NextResponse.redirect(url));
   }
 
-  return supabaseResponse;
+  return applySecurityHeaders(supabaseResponse);
 }
